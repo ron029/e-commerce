@@ -2,17 +2,33 @@
 	
 	class Product extends CI_Model
 	{
-		public function delete_category($post) {
+		public function add_img_url_new_product($json, $id)
+		{
+			$query = ("UPDATE products SET img_url = ? WHERE id = ?");
+			$values = array($json, $id);
+			return $this->db->query($query, $values);
+		}
+		
+		public function newly_created_product()
+		{
+			return $this->db->query("select * from products order by id desc limit 1")->row_array();
+		}
+		
+		public function get_category_name($id)
+		{
+			return $this->db->query("SELECT name FROM categories WHERE id = ?", $id)->row_array();
+		}
+		
+		public function delete_category($post)
+		{
 			$this->db->query("DELETE FROM capstone.categories WHERE id = ?", $post);
 		}
 //		public function get_id_new_product() {
 //			$query = ("SELECT id FROM capstone.products WHERE name = ? AND category_id = ? AND ")
 //		}
-		public function get_id_new_category($new_category)
+		public function get_id_new_category()
 		{
-			$query = ("SELECT id FROM capstone.categories WHERE name = ?");
-			$values = array($new_category);
-			return $this->db->query($query, $values)->row_array();
+			return $this->db->query("SELECT id FROM capstone.categories ORDER BY id DESC LIMIT 1")->row_array();
 		}
 		
 		public function add_product($post, $category_id)
@@ -41,11 +57,11 @@
 		
 		public function get_category()
 		{
-			return $this->db->query("SELECT * FROM capstone.categories")->result_array();
+			return $this->db->query("SELECT * FROM capstone.categories ORDER BY categories.name ASC")->result_array();
 		}
 		
 		public function get_product()
 		{
-			return $this->db->query("SELECT * FROM capstone.products")->result_array();
+			return $this->db->query("SELECT * FROM capstone.products ORDER BY products.name ASC")->result_array();
 		}
 	}

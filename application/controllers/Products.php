@@ -14,10 +14,19 @@
 			$this->load->view('product/products_page');
 		}
 		
+		public function get_new_product()
+		{
+			$data['data'] = $this->Product->newly_created_product();
+			$data_json['data'] = json_encode($data);
+			$this->load->view('admin/ajax/json', $data_json);
+		}
+		
 		public function get_template_delete_category($id)
 		{
-			$category_id['id'] = $id;
-			$this->load->view('admin/delete_category', $category_id);
+			$category_name = $this->Product->get_category_name($id);
+			$category_id = $id;
+			$data = array('name' => $category_name, 'id' => $category_id);
+			$this->load->view('admin/delete_category', $data);
 		}
 		
 		public function edit_category($id)
@@ -79,15 +88,17 @@
 				print_r($this->input->post());
 				echo '<pre>';
 				if ($this->input->post('product_add_category', TRUE)) {
-					$this->Product->add_category($this->input->post('product_add_category', TRUE));
-					$category_id = $this->Product->get_id_new_category($this->input->post('product_add_category', TRUE));
+//					$this->Product->add_category($this->input->post('product_add_category', TRUE));
+//					$category_id = $this->Product->get_id_new_category();
 //				    $this->Product->add_product($this->input->post(NULL, TRUE), $category_id);
-					die();
+				} else {
+					if ($this->input->post('product_category')) {
+					
+					}
 				}
-				
-				print_r($_FILES);
+				$new_product = $this->Product->newly_created_product();
 				$currentDirectory = getcwd();
-				$uploadDirectory = '\\assets\\img\\test_img\\';
+				$uploadDirectory = '\\assets\\img\\products\\';
 				$errors = array(); // Store errors here
 				
 				$fileExtensionsAllowed = array('jpg', 'jpeg', 'png'); // These will be the only file extensions allowed
@@ -96,38 +107,46 @@
 				$fileSize = $_FILES['img_upload']['size'];
 				$fileTmpName = $_FILES['img_upload']['tmp_name'];
 				$fileType = $_FILES['img_upload']['type'];
+				$json = '{ "imgid_no": [ ';
+				for ($counter = 1; $counter <= sizeof($_FILES['img_upload']['name']); $counter++) {
+					$json .= '"' . $new_product['id'] . '_' . $counter . '"';
+					if ($counter !== sizeof($_FILES['img_upload']['name'])) {
+						$json .= ',';
+					}
+				}
+				$json .= '] }';
+				print_r($json);
+				print_r($_FILES);
 				foreach ($fileName as $key => $file) {
 					$array[$key] = explode('.', $file);
 					$fileExtension[$key] = strtolower(end($array[$key]));
 					$uploadPath[$key] = $currentDirectory . $uploadDirectory . basename($file);
 				}
-				if ($this->input->post()) {
-					foreach ($fileExtension as $key => $file_ext) {
-						if (!in_array($file_ext, $fileExtensionsAllowed)) {
-							$errors[] = "This file extension is not allowed. Please upload a JPEG or PNG file";
-						}
-						if ($fileSize[$key] > 4000000) {
-							$errors[] = "File exceeds maximum size (4MB)";
-						}
+				
+				foreach ($fileExtension as $key => $file_ext) {
+					if (!in_array($file_ext, $fileExtensionsAllowed)) {
+						$errors[] = "This file extension is not allowed. Please upload a JPEG or PNG file";
 					}
-					if (count($errors) < 1) {
-						$imgs = array();
-						foreach ($uploadPath as $key => $upload) {
-							$didUpload = move_uploaded_file($fileTmpName[$key], $upload);
-							$imgs[$key] = base_url('assets/img/test_img/') . $fileName[$key];
-							$array[$key] = explode('/', $imgs[$key]);
-							$fileExtension[$key] = end($array[$key]);
-							rename($currentDirectory . '\\assets\\img\\test_img\\' . $fileExtension[$key], $currentDirectory . '\\assets\\img\\test_img\\1_' . $key . '.jpg');
-						}
-//					if ($didUpload) {
-//						echo "The file " . basename($fileName[$key]) . " has been uploaded";
-//						$new_file_name = escape_this_string($fileName);
-//						$query = "INSERT INTO uploads_file.uploads (path, name) VALUES ('$uploadPath','$new_file_name')";
-//						run_mysql_query($query);
-//						header("Location:index.php");
-//					} else {
-//						echo "An error occurred. Please contact the administrator.";
-//					}
+					if ($fileSize[$key] > 4000000) {
+						$errors[] = "File exceeds maximum size (4MB)";
+					}
+				}
+				if (count($errors) < 1) {
+					$imgs = array();
+					foreach ($uploadPath as $key => $upload) {
+//						$didUpload = move_uploaded_file($fileTmpName[$key], $upload);
+						$imgs[$key] = base_url('assets/img/products/') . $fileName[$key];
+						$array[$key] = explode('/', $imgs[$key]);
+						$fileExtension[$key] = end($array[$key]);
+//						rename($currentDirectory . '\\assets\\img\\products\\' . $fileExtension[$key], $currentDirectory . '\\assets\\img\\products\\' . $new_product['id'] . '_' . ($key + 1) . '.jpg');
+					}
+					print_r($currentDirectory . '\\assets\\img\\products\\' . $new_product['id'] . '_' . 1 . '.jpg');
+					$didUpload = 1;
+					if ($didUpload) {
+						echo "The file " . basename($fileName[0]) . " has been uploaded";
+//						$this->Product->add_img_url_new_product($json, $new_product['id']);
+					} else {
+						echo "An error occurred. Please contact the administrator.";
 					}
 				}
 			} else {
