@@ -2,6 +2,19 @@
 	
 	class Product extends CI_Model
 	{
+		public function delete_product($id) {
+			$this->db->query("DELETE FROM products WHERE id = ?", $id);
+		}
+		public function update_product($post) {
+			$query = ("UPDATE products SET category_id = ?, name = ?, description = ?, price = ?, stock = ?, img_url = ? WHERE id = ?");
+			$values = array($post['category_id'], $post['product_name'], $post['product_desc'], $post['product_price'], $post['product_qty'], $post['img_url'], $post['product_id']);
+			return $this->db->query($query, $values);
+		}
+		public function get_category_id_by_name($name)
+		{
+			return $this->db->query("SELECT id FROM categories WHERE name = ?", $name)->row_array();
+		}
+		
 		public function add_img_url_new_product($json, $id)
 		{
 			$query = ("UPDATE products SET img_url = ? WHERE id = ?");
@@ -52,7 +65,7 @@
 		
 		public function get_product_by_id($id)
 		{
-			return $this->db->query("SELECT products.*, categories.name as category_name FROM capstone.products left join categories on categories.id = products.category_id where products.id = ?", $id)->row_array();
+			return $this->db->query("SELECT products.*, categories.name as category_name, category_id FROM capstone.products left join categories on categories.id = products.category_id where products.id = ?", $id)->row_array();
 		}
 		
 		public function get_category()

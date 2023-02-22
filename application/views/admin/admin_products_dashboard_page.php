@@ -34,7 +34,7 @@
 				for (let key in img.imgid_no) {
 					htmlImgStr += '<li class="img_upload_section">' +
 						'<figure>' +
-						'<img src="' + '<?= base_url('assets/img/products/') ?>' + productImgSrc[key] + '.jpg' + '" alt="' + productImgAlt + '" />' +
+						'<img src="' + '../assets/img/products/' + productImgSrc[key] + '.jpg' + '" data-src="' + productImgSrc[key] + '" alt="' + productImgAlt + '" />' +
 						'</figure>' +
 						'<p class="img_filename">' + productImgAlt + '</p>' +
 						'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash btn_img_upload_delete" viewBox="0 0 16 16">' +
@@ -264,17 +264,23 @@
 				}
 				var productImgSrc = prevProductImg[mainIndexImg];
 				var productImgAlt = "img";
-
+				var selectedCategory = $(".selected_category").text();
+				let set_images = [];
+				$($(".img_upload_container").children('li').children('figure').children('img')).each( function (index) {
+					if(!($(this).attr('src').length > 200)) {
+						set_images[index] = $(this).attr('data-src');
+					}
+				});
+				$(".set_images").val(set_images);
+				$(".product_add_category").val(selectedCategory);
 				$(productIdEdited).children(".product_id + td").text(productName);
 				$(productIdEdited).children(".product_id + td + td").text(productInventory);
 				$(productIdEdited).children("td:first-child").find("img").attr("src", productImgSrc);
 				$(productIdEdited).children("td:first-child").find("img").attr("alt", productImgAlt);
 				$(this).parent().parent().submit(function () {
-
 					// return false;
 				});
 				hideDialogBox();
-				console.log(imgUpload);
 				// return false;
 			});
 			/**********************************************/
@@ -393,7 +399,6 @@
 			*/
 
 			function readURL(input) {
-				alert()
 				if (!input.files || !input.files[0]) {
 					return false;
 				} else if ($(".img_upload_section").length + input.files.length > 4) {
@@ -469,6 +474,10 @@
 				});
 
 			$(document).on("click", ".btn_img_upload_delete", function () {
+				img = $(this).siblings('input[type="checkbox"]').val();
+				$.post('../products/new_product/' + img, $(this).serialize(), function (res) {
+					console.log(res);
+				});
 				if (!$(this).siblings("input[type=checkbox]").attr("disabled")) {
 					resetCheckbox();
 				}
@@ -685,7 +694,7 @@
 <div class="admin_product_delete">
 	<p>Are you sure you want to delete product "<span class="delete_product_name">Product Name</span>" (ID: <span class="delete_product_id">ID</span>)</p>
 	<div>
-		<form action="" method="post">
+		<form action="../products/delete_product" method="post">
 			<input class="product_id" type="hidden" name="product_id" value="id"/>
 			<input type="submit" value="Yes"/>
 		</form>
@@ -719,6 +728,7 @@
 		<p>Price: </p><input class="input_product_price" type="number" name="product_price" min="0.01" step="0.01"/>
 		<p>Quantity (Inventory): </p><input class="input_product_qty" type="number" name="product_qty"/>
 		<p class="img_field_name">Images: </p><input id="img_upload" type="file" name="img_upload[]" multiple="multiple" accept=".png, .jpg, .jpeg"/>
+		<input type="hidden" name="set_images" class="set_images">
 		<label class="file_upload_label" for="img_upload">Upload</label>
 		<ul class="img_upload_container">
 		</ul>
