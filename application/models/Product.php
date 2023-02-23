@@ -2,14 +2,22 @@
 	
 	class Product extends CI_Model
 	{
-		public function delete_product($id) {
+		public function get_category_product_id($id) {
+			$category_id = $this->db->query("SELECT category_id FROM products WHERE products.id = ?", $id)->row_array();
+			return $this->db->query("SELECT * FROM products WHERE category_id = ?", $category_id)->result_array();
+		}
+		public function delete_product($id)
+		{
 			$this->db->query("DELETE FROM products WHERE id = ?", $id);
 		}
-		public function update_product($post) {
+		
+		public function update_product($post)
+		{
 			$query = ("UPDATE products SET category_id = ?, name = ?, description = ?, price = ?, stock = ?, img_url = ? WHERE id = ?");
 			$values = array($post['category_id'], $post['product_name'], $post['product_desc'], $post['product_price'], $post['product_qty'], $post['img_url'], $post['product_id']);
 			return $this->db->query($query, $values);
 		}
+		
 		public function get_category_id_by_name($name)
 		{
 			return $this->db->query("SELECT id FROM categories WHERE name = ?", $name)->row_array();
@@ -36,9 +44,7 @@
 		{
 			$this->db->query("DELETE FROM capstone.categories WHERE id = ?", $post);
 		}
-//		public function get_id_new_product() {
-//			$query = ("SELECT id FROM capstone.products WHERE name = ? AND category_id = ? AND ")
-//		}
+		
 		public function get_id_new_category()
 		{
 			return $this->db->query("SELECT id FROM capstone.categories ORDER BY id DESC LIMIT 1")->row_array();

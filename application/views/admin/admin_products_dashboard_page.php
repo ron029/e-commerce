@@ -278,10 +278,10 @@
 				$(productIdEdited).children("td:first-child").find("img").attr("src", productImgSrc);
 				$(productIdEdited).children("td:first-child").find("img").attr("alt", productImgAlt);
 				$(this).parent().parent().submit(function () {
-					// return false;
+					return false;
 				});
 				hideDialogBox();
-				// return false;
+				return false;
 			});
 			/**********************************************/
 

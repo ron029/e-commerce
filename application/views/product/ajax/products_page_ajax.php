@@ -1,6 +1,7 @@
 <?php
 	/** @var Shops $categories
 	 * @var Products $products
+	 * @var Shops $category_name
 	 */
 ?>
 <aside class="category_panel">
@@ -14,24 +15,21 @@
 	</form>
 	<h4>Categories</h4>
 	<section class="products_categories">
-
-
 <?php
 		foreach ($categories as $category) {
 ?>
-		<a href="#"><?= $category['category'] ?>(<?= $category['category_count'] ?>)</a>
+		<a href="<?= base_url('products/category/' . $category['id']) ?>"><?= $category['category'] ?> ( <?= $category['category_count'] ?> )</a>
 <?php
 		}
 ?>
 	<!--	<a href="">Shoes(30)</a>-->
 	<!--	<a href="">Shorts(30)</a>-->
-	<a class="show_all_products" href="#">All Products</a>
-
+		<a class="show_all_products" href="<?= base_url('products/category/0') ?>">All Products</a>
 	</section>
 </aside>
 <article class="catalog">
 	<div class="subheader">
-		<h2><span class="category_name">T-shirts</span> (page <span class="page_number">1</span>)</h2>
+		<h2><span class="category_name"><?= (isset($category_name['name'])) ? $category_name['name'] : 'All Products' ?></span> (page <span class="page_number">1</span>)</h2>
 		<section class="pagination_top">
 			<a class="first_page" href="">first</a><!--
                 ---><a class="prev_page" href="">prev</a><!--
@@ -39,22 +37,23 @@
                 ---><a class="next_page" href="">next</a>
 		</section>
 	</div>
-	<form action="" method="post">
-		<label>Sorted by </label>
-		<select name="sort_by">
-			<option value="0">Price: Low to High</option>
-			<option value="1">Price: High to Low</option>
-			<option value="2">Most Popular</option>
+	<form class="sort_form" action="../shops/category" method="post">
+		<label for="sort">Sorted by </label>
+		<select class="sort" name="sort_by" id="sort">
+			<option value="0" <?php if ($this->session->flashdata('sort') !== null && ($this->session->flashdata('sort') == 0)) echo 'selected'; ?>>Price: Low to High</option>
+			<option value="1" <?php if ($this->session->flashdata('sort') == 1) echo 'selected'; ?>>Price: High to Low</option>
+			<option value="2" <?php if ($this->session->flashdata('sort') == 2) echo 'selected'; ?>>Most Popular</option>
 		</select>
 	</form>
 	<div class="products_container">
 <?php
 		foreach ($products as $key => $product) {
 			$imgs = json_decode($product['img_url'], TRUE);
+
 ?>
 		<section class="products">
 			<figure class="item">
-				<a href="<?= base_url('products/show') ?>"><img src="<?= base_url('assets/img/products/' . $imgs['imgid_no'][0] . '.jpg') ?>" alt="<?= $product['name'] ?>"/></a>
+				<a href="<?= base_url('products/show/' . $product['id']) ?>"><img src="<?= base_url('assets/img/products/' . $imgs['imgid_no'][0] . '.jpg') ?>" alt="<?= $product['name'] ?>"/></a>
 				<h4>P <?= $product['price']?></h4>
 			</figure>
 			<p><?= $product['name'] ?></p>

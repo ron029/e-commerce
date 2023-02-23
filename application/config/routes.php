@@ -51,8 +51,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'users/login';
 $route['admin'] = 'users/login';
-$route['products/category/(:any)/(:any)'] = 'shops/index/$1/$1';
-$route['products/category/(:any)'] = 'shops/index/$1';
+$route['products/show/(:any)'] = 'shops/show/$1';
+$route['products/category/(:any)/(:any)'] = 'shops/category/$1/$1';
+$route['products/category/(:any)'] = 'shops/category/$1';
+$route['products'] = 'shops/index';
 $route['dashboard/orders'] = 'orders/admin_orders';
 $route['dashboard/products'] = 'products/admin_products';
 $route['404_override'] = '';

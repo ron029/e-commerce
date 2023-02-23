@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>(Products Page) Tshirts (page 1) | Lashopda</title>
+    <title>All Products | Lashopda</title>
 	<script src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
 	<link rel="stylesheet" type="text/css" href="<?= base_url("assets/css/normalize.css") ?>" />
 	<link rel="stylesheet" type="text/css" href="<?= base_url("assets/css/style.css") ?>" />
@@ -20,19 +20,27 @@
             }
         }
         /**********************************************/
+		$.get('<?= base_url("shops/index_html") ?>', function (res) {
+			$('#shop').html(res);
+		});
 
         $(document).ready(function(){
-			$.get('<?= base_url("shops/index_html") ?>', function (res) {
-				$('#shop').html(res);
+			$(document).on("change", ".sort", function () {
+				$.post($('.sort_form').attr('action'), $(this).serialize(), function (res) {
+					$('#shop').html(res);
+				});
+				return false;
 			});
             /*  Product categories selection    */
             $(document).on("click", ".products_categories > a", function(){
-                categoryName = $(this).text().split("(")[0];
-				console.log(categoryName);
-				document.title = categoryName + ' | Dojo eCommerce';
-                $(".category_name").text(categoryName);
-                // $(".products > p").text(categoryName);
-                pageNumHighlight(pageNum);
+				$.get($(this).attr('href'), function (res) {
+					$('#shop').html(res);
+				});
+	                categoryName = $(this).text().split("(")[0];
+					document.title = categoryName + ' | Lashopda';
+	                $(".category_name").text(categoryName);
+	                // $(".products > p").text(categoryName);
+	                pageNumHighlight(pageNum);
                 return false;
             });
             /**********************************************/
@@ -84,7 +92,7 @@
 </head>
 <body>
     <header>
-        <a href="products_page.html"><h2>Lashopda</h2></a>
+        <a href="<?= base_url('products') ?>"><h2>Lashopda</h2></a>
         <a class="nav_end" href="<?= base_url('carts') ?>"><h3>Shopping Cart (<span class="cart_quantity">4</span>)</h3></a>
     </header>
     <main id="shop"></main>

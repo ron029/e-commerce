@@ -31,7 +31,7 @@
 				if($data['role'] == 9) {
 					redirect(base_url('orders/admin_orders'));
 				} else if ($data['role'] == 1) {
-					redirect(base_url('products/category/1/1'));
+					redirect(base_url('products'));
 				}
 			}
 		}

@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>(Carts Page) Shopping Cart | Lashopda</title>
+    <title>Shopping Cart | Lashopda</title>
 	<script src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
 	<link rel="stylesheet" type="text/css" href="<?= base_url("assets/css/normalize.css") ?>" />
 	<link rel="stylesheet" type="text/css" href="<?= base_url("assets/css/style.css") ?>" />
     <script>
         $(document).ready(function(){
-
             /*  For submitting forms, redirect to page    */
             $(document).on("submit", "form", function(){
                 window.location = $(this).attr("action");
@@ -29,8 +28,8 @@
 </head>
 <body>
     <header>
-        <a href="products_page.html"><h2>Lashopda</h2></a>
-        <a class="nav_end" href="cart_page.html"><h3>Shopping Cart (<span class="cart_quantity">4</span>)</h3></a>
+        <a href="<?= base_url('products') ?>"><h2>Lashopda</h2></a>
+        <a class="nav_end" href="<?= base_url('carts') ?>"><h3>Shopping Cart (<span class="cart_quantity">4</span>)</h3></a>
     </header>
     <main>
         <section class="cart_table_section">
@@ -84,7 +83,7 @@
             </table>
             <section class="cart_total_section">
                 <h4>Total: <span class="cart_total_amount">$49.96</span></h4>
-                <p><a class="btn_continue_shopping" href="products_page.html">Continue Shopping</a></p>
+                <p><a class="btn_continue_shopping" href="<?= base_url('products') ?>">Continue Shopping</a></p>
             </section>
         </section>
         <section class="cart_billing_section">

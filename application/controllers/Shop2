@@ -1,0 +1,54 @@
+public function category($category_id = null)
+		{
+			echo "sort value on entering the process is now: " . $this->input->post('sort_by') . "<br>";
+			echo "category_id before the process: " . $category_id . "<br>";
+			echo "category_ID_SESSION before the process: ";
+			print_r($this->session->userdata('category_id'));
+			echo "<br>";
+
+			if ($category_id == 0) {
+				$products = $this->Product->get_product();
+				$category_name = 'All Products';
+				$this->session->set_userdata('category_id', 0);
+			} else {
+				echo 'category_id before change the session: ' . $category_id . '<br>';
+				if ($this->session->userdata('category_id') !== $category_id) {
+					$this->session->set_userdata('category_id', $category_id);
+					$this->session->set_flashdata('sort', 0);
+				}
+
+				if ($this->session->userdata('category_id') == null) $this->session->set_userdata('category_id', $category_id);
+
+				$category_id = $this->session->userdata('category_id');
+
+				$products = $this->Shop->get_product_by_category($category_id);
+
+				$category_name = $this->Product->get_category_name($category_id);
+			}
+
+			if ($category_id == null && $category_id != 0) {
+				$category_id = $this->session->userdata('category_id');
+				echo 'CATEGORY ID VALUE BEFORE SORT IS: ' . $category_id . '<br>';
+			} else {
+				echo 'CATEGORY ID IS NOT NULL, VALUE IS : ' . $category_id . '<br>';
+			}
+
+			if ($this->input->post('sort_by') != null && $category_id == 0) {
+				$this->session->set_flashdata('sort', $this->input->post('sort_by', TRUE));
+				$products = $this->Shop->get_products_filter_sort($this->input->post('sort_by', TRUE));
+				echo "flash data in sort: " . ($this->session->flashdata('sort')) . "<br>";
+			} else if ($this->input->post('sort_by') !== null) {
+				$this->session->set_flashdata('sort', $this->input->post('sort_by', TRUE));
+				$products = $this->Shop->get_products_filter($category_id, $this->input->post('sort_by', TRUE));
+				echo "flash data in sort: " . ($this->session->flashdata('sort')) . "<br>";
+			}
+
+			echo 'category_id is now: ' . $category_id . '<br>';
+			echo "category_id in SESSION IS NOW: ";
+			print_r($this->session->userdata('category_id'));
+			echo "<br>";
+			$categories = $this->Shop->get_category_count();
+			$data = array('categories' => $categories, 'products' => $products, 'category_name' => $category_name);
+
+			$this->load->view('product/ajax/products_page_ajax', $data);
+		}

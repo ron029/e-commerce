@@ -1,3 +1,9 @@
+<?php
+	/**
+	 * @var Shops $product
+	 * @var Shops $similar_products
+	 */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,27 +84,36 @@
         <a class="nav_end" href="<?= base_url('carts') ?>"><h3>Shopping Cart (<span class="cart_quantity">4</span>)</h3></a>
     </header>
     <main>
+	    <?php
+			$imgs = json_decode($product['img_url'], TRUE);
+	    ?>
         <section class="item_panel">
             <a class="go_back" href=""><p>Go Back</p></a>
             <div class="item_details">
                 <aside class="img_section">
-                    <img class="main_img" src="../../../application/views/assets/img/products/0/products.jpg" alt="T-shirt"/>        
+                    <img class="main_img" src="<?= base_url('assets/img/products/') . $imgs['imgid_no'][0] ?>.jpg" alt="<?= $product['name'] ?>"/>
                     <section>
-                        <img class="sub_img" src="../../../application/views/assets/img/products/1/T-shirt.jpg" alt="T-shirt"/>
-                        <img class="sub_img default_main_img" src="../../../application/views/assets/img/products/0/products.jpg" alt="T-shirt"/>
-                        <img class="sub_img" src="../../../application/views/assets/img/products/2/Shorts.jpg" alt="T-shirt"/>
-                        <img class="sub_img" src="../../../application/views/assets/img/products/3/Shoes.jpg" alt="T-shirt"/>
+<?php
+                    foreach ($imgs['imgid_no'] as $key => $img) {
+?>
+                        <img class="sub_img" <?php if ($key == 0) echo 'default_main_img'?> src="<?= base_url('assets/img/products/') . $img . '.jpg' ?>" alt="T-shirt"/>
+<?php
+                    }
+?>
+<!--                    <img class="sub_img default_main_img" src="../../../application/views/assets/img/products/0/products.jpg" alt="T-shirt"/>-->
+<!--	                <img class="sub_img" src="../../../application/views/assets/img/products/2/Shorts.jpg" alt="T-shirt"/>-->
+<!--                    <img class="sub_img" src="../../../application/views/assets/img/products/3/Shoes.jpg" alt="T-shirt"/>-->
                     </section>
                 </aside>
                 <aside class="desc_section">
-                    <h2>T-shirt</h2>
-                    <p>Description about the product ... . . . . . . .   Description about the product ... Description about the product ... Description about the product ... Description about the product ... Description about the product ... Description about the product ... Description about the product ... Description</p>
+                    <h2><?= $product['name'] ?></h2>
+                    <p><?= $product['description'] ?></p>
                     <form action="" method="post">
                         <input type="hidden" name="product_id" value="product_id"/>
                         <select class="new_order_qty">
-                            <option>1 ($19.99)</option>
-                            <option>2 ($39.98)</option>
-                            <option>3 ($59.97)</option>
+	                        <option>1 (P <?= $product['price'] ?>)</option>
+	                        <option>2 (P <?= $product['price'] * 2 ?>)</option>
+	                        <option>3 (P <?= $product['price'] * 3 ?>)</option>
                         </select>
                         <input type="submit" value="Buy"/>
                         <p class="item_added_confirm">Item added to the cart.</p>
@@ -108,55 +123,63 @@
         </section>
         <article class="similar_items_section">
             <h3>Similar Items</h3>
+	        <?php
+		        foreach ($similar_products as $similar_product) {
+					if ($product['id'] == $similar_product['id']) continue;
+			        $imgs = json_decode($similar_product['img_url'], TRUE);
+	        ?>
             <section class="products">
                 <figure class="item">
-                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>
-                    <h4>$19.99</h4>
+                    <a href="<?= base_url('products/show/' . $similar_product['id']) ?>"><img src="<?= base_url('assets/img/products/') . $imgs['imgid_no'][0] ?>.jpg" alt="<?= $similar_product['name'] ?>"/></a>
+                    <h4>P <?= $similar_product['price'] ?></h4>
                 </figure>
-                <p>T-shirt</p>
+                <p><?= $similar_product['name'] ?></p>
             </section>
-            <section class="products">
-                <figure class="item">
-                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>
-                    <h4>$19.99</h4>
-                </figure>
-                <p>T-shirt</p>
-            </section>
-            <section class="products">
-                <figure class="item">
-                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>
-                    <h4>$19.99</h4>
-                </figure>
-                <p>T-shirt</p>
-            </section>
-            <section class="products">
-                <figure class="item">
-                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>
-                    <h4>$19.99</h4>
-                </figure>
-                <p>T-shirt</p>
-            </section>
-            <section class="products">
-                <figure class="item">
-                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>
-                    <h4>$19.99</h4>
-                </figure>
-                <p>T-shirt</p>
-            </section>
-            <section class="products">
-                <figure class="item">
-                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>
-                    <h4>$19.99</h4>
-                </figure>
-                <p>T-shirt</p>
-            </section>
-            <section class="products">
-                <figure class="item">
-                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>
-                    <h4>$19.99</h4>
-                </figure>
-                <p>T-shirt</p>
-            </section>
+	        <?php
+	        }
+			?>
+<!--            <section class="products">-->
+<!--                <figure class="item">-->
+<!--                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>-->
+<!--                    <h4>$19.99</h4>-->
+<!--                </figure>-->
+<!--                <p>T-shirt</p>-->
+<!--            </section>-->
+<!--            <section class="products">-->
+<!--                <figure class="item">-->
+<!--                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>-->
+<!--                    <h4>$19.99</h4>-->
+<!--                </figure>-->
+<!--                <p>T-shirt</p>-->
+<!--            </section>-->
+<!--            <section class="products">-->
+<!--                <figure class="item">-->
+<!--                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>-->
+<!--                    <h4>$19.99</h4>-->
+<!--                </figure>-->
+<!--                <p>T-shirt</p>-->
+<!--            </section>-->
+<!--            <section class="products">-->
+<!--                <figure class="item">-->
+<!--                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>-->
+<!--                    <h4>$19.99</h4>-->
+<!--                </figure>-->
+<!--                <p>T-shirt</p>-->
+<!--            </section>-->
+<!--            <section class="products">-->
+<!--                <figure class="item">-->
+<!--                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>-->
+<!--                    <h4>$19.99</h4>-->
+<!--                </figure>-->
+<!--                <p>T-shirt</p>-->
+<!--            </section>-->
+<!--            <section class="products">-->
+<!--                <figure class="item">-->
+<!--                    <a href="item_page.html"><img src="../../../application/views/assets/img/products/0/products.jpg" alt="Tshirt"/></a>-->
+<!--                    <h4>$19.99</h4>-->
+<!--                </figure>-->
+<!--                <p>T-shirt</p>-->
+<!--            </section>-->
             <section class="pagination">
                 <a href="">1</a><!--
              --><a href="">2</a><!--

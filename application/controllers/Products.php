@@ -158,7 +158,7 @@
 				$category_id = $this->check_category($this->input->post('product_add_category', TRUE), $this->input->post('product_category', TRUE));
 				
 				$update_details = array('category_id' => $category_id, 'product_name' => $this->input->post('product_name', TRUE), 'product_desc' => $this->input->post('product_desc', TRUE), 'product_price' => $this->input->post('product_price', TRUE), 'product_qty' => $this->input->post('product_qty', TRUE), 'img_url' => $image_names, 'product_id' => $this->input->post('product_id', TRUE));
-//				$this->Product->update_product($update_details);
+				$this->Product->update_product($update_details);
 				
 				// Check if there is a form submitted otherwise 403 status is thrown.
 			} else if ($this->input->post()) {
@@ -227,10 +227,10 @@
 					}
 					
 					if ($didUpload) {
-						echo "The file " . basename($fileName[0]) . " has been uploaded";
+//						echo "The file " . basename($fileName[0]) . " has been uploaded";
 						$this->Product->add_img_url_new_product($json, $new_product['id']);
 					} else {
-						echo "An error occurred. Please contact the administrator.";
+//						echo "An error occurred. Please contact the administrator.";
 					}
 				}
 			} else {
