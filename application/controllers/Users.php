@@ -23,13 +23,14 @@
 		public function process_login()
 		{
 			$data = $this->User->check_user($this->input->post(NULL, TRUE));
+			$this->session->set_userdata('user', $data);
 			print_r($data);
 			if (!$data) {
 				$this->session->set_flashdata('login_error', 1);
 				redirect(base_url('users/login'));
 			} else {
 				if($data['role'] == 9) {
-					redirect(base_url('orders/admin_orders'));
+					redirect(base_url('dashboard/orders'));
 				} else if ($data['role'] == 1) {
 					redirect(base_url('products'));
 				}

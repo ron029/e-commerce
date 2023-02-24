@@ -394,14 +394,17 @@ figure.item{
 .cart_table span{
     margin: 0 30px 0 0;
 }
-.btn_delete_product{
+.btn_delete_product {
     background-color: rgba(255, 255, 255, 0);
     border: none;
     display: inline-block;
-    padding: 0;
+    padding: 10px;
     background-color: rgb(255, 47, 47);
 }
-    .btn_delete_product svg{
+	.btn_delete_product:hover {
+		cursor: pointer;
+	}
+	.btn_delete_product svg{
         padding: 8.6px;
         border: 1px solid #a3a3a3;
         vertical-align: middle;

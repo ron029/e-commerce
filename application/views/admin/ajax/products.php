@@ -33,7 +33,7 @@
 		</td>
 	</tr>
 <?php
-}
+	}
 ?>
 <!--	<tr class="color1 product_id_2">-->
 <!--		<td><img src="../../../application/views/assets/img/products/0/products.jpg" alt="t-shirt"></td>-->

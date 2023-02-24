@@ -1,3 +1,9 @@
+<?php
+	/** @var Orders $orders */
+//	echo '<pre>';
+//	print_r($orders);
+//	echo '</pre>';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,12 +84,15 @@
                 </tr>
             </thead>
             <tbody>
+<?php
+	            foreach ($orders as $order) {
+?>
                 <tr>
-                    <td><a href="admin_order_detail_page.html">100</a></td>
-                    <td>Bob</td>
-                    <td>9/6/2014</td>
-                    <td>123 dojo way Bellevue WA 98005</td>
-                    <td>$149.99</td>
+                    <td><a href="<?= base_url('orders/show/') . $order['id'] ?>"><?= $order['id'] ?></a></td>
+                    <td><?= ucwords($order['full_name']) ?></td>
+                    <td><?= $order['created_at'] ?></td>
+                    <td><?= ucwords($order['billing']['address_bill'] . ' ' . $order['billing']['address2_bill'] . ' ' . $order['billing']['city_bill'] . ' ' . $order['billing']['state_bill']  . ' ' . $order['billing']['zipcode_bill'])?></td>
+                    <td>P <?= number_format($order['carts_total_price'], 2) ?></td>
                     <td>
                         <form action="" method="post">
                             <input type="hidden" name="product_id" value="product_id"/>
@@ -95,40 +104,43 @@
                         </form>
                     </td>
                 </tr>
-                <tr class="color1">
-                    <td><a href="admin_order_detail_page.html">99</a></td>
-                    <td>Bob</td>
-                    <td>9/6/2014</td>
-                    <td>123 dojo way Bellevue WA 98005</td>
-                    <td>$149.99</td>
-                    <td>
-                        <form action="" method="post">
-                            <input type="hidden" name="product_id" value="product_id"/>
-                            <select name="admin_orders_update">
-                                <option>Order in process</option>
-                                <option selected>Shipped</option>
-                                <option>Cancelled</option>
-                            </select>
-                        </form>
-                    </td>
-                </tr>
-                <tr>
-                    <td><a href="admin_order_detail_page.html">98</a></td>
-                    <td>Bob</td>
-                    <td>9/6/2014</td>
-                    <td>123 dojo way Bellevue WA 98005</td>
-                    <td>$149.99</td>
-                    <td>
-                        <form action="" method="post">
-                            <input type="hidden" name="product_id" value="product_id"/>
-                            <select name="admin_orders_update">
-                                <option value="1">Order in process</option>
-                                <option value="2" selected>Shipped</option>
-                                <option value="3">Cancelled</option>
-                            </select>
-                        </form>
-                    </td>
-                </tr>
+<?php
+	            }
+?>
+<!--                <tr class="color1">-->
+<!--                    <td><a href="admin_order_detail_page.html">99</a></td>-->
+<!--                    <td>Bob</td>-->
+<!--                    <td>9/6/2014</td>-->
+<!--                    <td>123 dojo way Bellevue WA 98005</td>-->
+<!--                    <td>$149.99</td>-->
+<!--                    <td>-->
+<!--                        <form action="" method="post">-->
+<!--                            <input type="hidden" name="product_id" value="product_id"/>-->
+<!--                            <select name="admin_orders_update">-->
+<!--                                <option>Order in process</option>-->
+<!--                                <option selected>Shipped</option>-->
+<!--                                <option>Cancelled</option>-->
+<!--                            </select>-->
+<!--                        </form>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td><a href="admin_order_detail_page.html">98</a></td>-->
+<!--                    <td>Bob</td>-->
+<!--                    <td>9/6/2014</td>-->
+<!--                    <td>123 dojo way Bellevue WA 98005</td>-->
+<!--                    <td>$149.99</td>-->
+<!--                    <td>-->
+<!--                        <form action="" method="post">-->
+<!--                            <input type="hidden" name="product_id" value="product_id"/>-->
+<!--                            <select name="admin_orders_update">-->
+<!--                                <option value="1">Order in process</option>-->
+<!--                                <option value="2" selected>Shipped</option>-->
+<!--                                <option value="3">Cancelled</option>-->
+<!--                            </select>-->
+<!--                        </form>-->
+<!--                    </td>-->
+<!--                </tr>-->
             </tbody>
         </table>
         <section class="pagination">

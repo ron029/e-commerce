@@ -1,3 +1,8 @@
+<?php
+	/** @var Carts $carts_quantity
+	 *
+	 */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +28,14 @@
 		$.get('<?= base_url("shops/index_html") ?>', function (res) {
 			$('#shop').html(res);
 		});
-
+		$.get('<?= base_url("shops/carts_quantity")?>', function (res) {
+			if (parseInt(res) >= 0) {
+				var cart_quantity = parseInt(res);
+			} else {
+				var cart_quantity = 0;
+			}
+			$(".cart_quantity").text(cart_quantity);
+		});
         $(document).ready(function(){
 			$(document).on("change", ".sort", function () {
 				$.post($('.sort_form').attr('action'), $(this).serialize(), function (res) {
@@ -93,7 +105,7 @@
 <body>
     <header>
         <a href="<?= base_url('products') ?>"><h2>Lashopda</h2></a>
-        <a class="nav_end" href="<?= base_url('carts') ?>"><h3>Shopping Cart (<span class="cart_quantity">4</span>)</h3></a>
+        <a class="nav_end" href="<?= base_url('carts') ?>"><h3>Shopping Cart (<span class="cart_quantity"></span>)</h3></a>
     </header>
     <main id="shop"></main>
 </body>

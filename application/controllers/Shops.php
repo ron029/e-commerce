@@ -2,6 +2,7 @@
 	
 	/** @property Product Product
 	 * @property Shop Shop
+	 * @property Cart Cart
 	 */
 	class Shops extends CI_Controller
 	{
@@ -10,11 +11,13 @@
 			parent::__construct();
 			$this->load->model('Product');
 			$this->load->model('Shop');
+			$this->load->model('Cart');
 		}
 		
 		public function index()
 		{
-			$this->load->view('product/products_page');
+			$data['carts_quantity'] = $this->Cart->get_cart_quantity();
+			$this->load->view('product/products_page', $data);
 		}
 		
 		public function index_html()
@@ -23,6 +26,10 @@
 			$products = $this->Product->get_product();
 			$data = array('categories' => $categories, 'products' => $products, 'category_name' => 'All Products');
 			$this->load->view('product/ajax/products_page_ajax', $data);
+		}
+		public function carts_quantity() {
+			$carts_quantity = $this->Cart->get_cart_quantity();
+			echo $carts_quantity['carts_quantity'];
 		}
 		
 		public function category($category_id = null)
@@ -59,9 +66,11 @@
 			$this->load->view('product/ajax/products_page_ajax', $data);
 		}
 		public function show($id) {
+			
 			$similar_products = $this->Product->get_category_product_id($id);
 			$product = $this->Product->get_product_by_id($id);
-			$data = array('product' => $product, 'similar_products' => $similar_products);
+			$title = ucwords($product['name'] . ' | Lashopda');
+			$data = array('product' => $product, 'similar_products' => $similar_products, 'title' => $title);
 			$this->load->view('product/item_page', $data);
 		}
 	}

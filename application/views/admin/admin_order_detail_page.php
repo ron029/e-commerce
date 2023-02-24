@@ -1,3 +1,6 @@
+<?php
+	/** @var Order $order */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,26 +14,26 @@
 </head>
 <body>
     <header class="header_admin">
-        <a href="admin_orders_dashboard_page.html"><h2>Dashboard</h2></a>
-        <a href="admin_orders_dashboard_page.html"><h3>Orders</h3></a>
-        <a href="admin_products_dashboard_page.html"><h3>Products</h3></a>
-        <a class="nav_end" href="../login_register/login_page.html"><h3>Log off</h3></a>
+	    <a href="<?= base_url('dashboard/orders') ?>"><h2>Dashboard</h2></a>
+	    <a href="<?= base_url('dashboard/orders') ?>"><h3>Orders</h3></a>
+	    <a href="<?= base_url('dashboard/products') ?>"><h3>Products</h3></a>
+        <a class="nav_end" href="<?= base_url('admin') ?>"><h3>Log off</h3></a>
     </header>
     <main>
         <aside class="admin_order_info">
-            <h4>Order ID: 1</h4>
+            <h4>Order ID: <?= $order['id'] ?></h4>
             <h4>Customer shipping info:</h4>
-            <span><p>Name: </p><p>bob</p></span>
-            <span><p>Address: </p><p>123 dojo way</p></span>
-            <span><p>City: </p><p>seattle</p></span>
-            <span><p>State: </p><p>wa</p></span>
-            <span><p>Zip: </p><p>98133</p></span>
+            <span><p>Name: </p><p><?= ucwords($order['shipping']['first_name_ship'] . ' ' . $order['shipping']['last_name_ship']) ?></p></span>
+            <span><p>Address: </p><p><?= ucwords($order['billing']['address_bill'] . ' ' . $order['billing']['address2_bill'] . ' ' . $order['billing']['city_bill'] . ' ' . $order['billing']['state_bill'] . ' ' . $order['billing']['zipcode_bill']) ?></p></span>
+            <span><p>City: </p><p><?= ucwords($order['shipping']['city_ship']) ?></p></span>
+            <span><p>State: </p><p><?= ucwords($order['shipping']['state_ship']) ?></p></span>
+            <span><p>Zip: </p><p><?= ucwords($order['shipping']['zipcode_ship']) ?></p></span>
             <h4>Customer billing info:</h4>
-            <span><p>Name: </p><p>bob</p></span>
-            <span><p>Address: </p><p>123 dojo way</p></span>
-            <span><p>City: </p><p>seattle</p></span>
-            <span><p>State: </p><p>wa</p></span>
-            <span><p>Zip: </p><p>98133</p></span>
+            <span><p>Name: </p><p><?= ucwords($order['billing']['first_name_bill'] . ' ' . $order['billing']['last_name_bill']) ?></p></span>
+            <span><p>Address: </p><p><?= ucwords($order['billing']['address_bill']) ?></p></span>
+            <span><p>City: </p><p><?= ucwords($order['billing']['city_bill']) ?></p></span>
+            <span><p>State: </p><p><?= ucwords($order['billing']['state_bill']) ?></p></span>
+            <span><p>Zip: </p><p><?= ucwords($order['billing']['zipcode_bill']) ?></p></span>
         </aside>
         <aside>
             <table class="admin_order_info_table">
@@ -44,28 +47,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>35</td>
-                        <td>cup</td>
-                        <td>$9.99</td>
-                        <td>1</td>
-                        <td>$9.99</td>
+<?php
+	                    foreach ($order['order_items'] as $key => $item) {
+?>
+                    <tr class="color<?= ($key % 2) ? 1 : 0 ?>">
+                        <td><?= $item['name'] ?></td>
+                        <td><?= $item['name'] ?></td>
+                        <td>P <?= number_format($item['price'], 2) ?></td>
+                        <td><?= $item['quantity'] ?></td>
+                        <td>P <span class="items"><?= number_format($item['quantity'] * $item['price'], 2) ?></span></td>
                     </tr>
-                    <tr class="color1">
-                        <td>215</td>
-                        <td>shirt</td>
-                        <td>$19.99</td>
-                        <td>2</td>
-                        <td>$39.98</td>
-                    </tr>6
+<?php
+	                    }
+?>
                 </tbody>
             </table>
             <div class="admin_order_info_status">
                 <p class="shipped_color">Status: <span>shipped</span></p>
                 <aside>
-                    <span><p>Sub total: </p><p>$29.98</p></span>
-                    <span><p>Shipping: </p><p>$1.00</p></span>
-                    <span><p>Total Price: </p><p>$30.98</p></span>
+                    <span><p>Sub total: </p><p class="sub_total">P <?= number_format($order['carts_total_price'], 2) ?></p></span>
+                    <span><p>Shipping: </p><p class="shipping">P <?= number_format($order['shipping_fee'], 2) ?></p></span>
+                    <span><p>Total Price: </p><p class="total_price">P <?= number_format(($order['carts_total_price'] + 150), 2) ?></p></span>
                 </aside>
             </div>
         </aside>
