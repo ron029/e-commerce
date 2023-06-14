@@ -15,12 +15,14 @@
 		}
 		
 		public function delete_product() {
-			if ($this->input->post()) {
-				$this->Product->delete_product($this->input->post('product_id', TRUE));
-			} else {
-				$message_403 = "You don't have access to the url you where trying to reach.";
-				show_error($message_403, 403);
-			}
+			print_r($_POST);
+			echo 'deleted';
+//			if ($this->input->post()) {
+//				$this->Product->delete_product($this->input->post('product_id', TRUE));
+//			} else {
+//				$message_403 = "You don't have access to the url you where trying to reach.";
+//				show_error($message_403, 403);
+//			}
 		}
 		
 		public function get_new_product()
@@ -107,6 +109,7 @@
 		
 		public function new_product($img = null)
 		{
+			print_r($_POST);
 			if (isset($img)) {
 				$product = $this->Product->get_product_by_id($img);
 				$img_url = json_decode($product['img_url'], TRUE);
@@ -156,7 +159,7 @@
 				
 				// Verify category if exist then get the category id. If not, create a new category for no existing category then get the id.
 				$category_id = $this->check_category($this->input->post('product_add_category', TRUE), $this->input->post('product_category', TRUE));
-				
+				print_r($image_names);
 				$update_details = array('category_id' => $category_id, 'product_name' => $this->input->post('product_name', TRUE), 'product_desc' => $this->input->post('product_desc', TRUE), 'product_price' => $this->input->post('product_price', TRUE), 'product_qty' => $this->input->post('product_qty', TRUE), 'img_url' => $image_names, 'product_id' => $this->input->post('product_id', TRUE));
 				$this->Product->update_product($update_details);
 				
@@ -192,7 +195,7 @@
 					foreach ($_FILES['img_upload']['name'] as $key => $file) {
 						if (isset($main) && $main === $_FILES['img_upload']['name'][$key]) continue;
 						$json .= '"' . $new_product['id'] . '_' . ($key + 1) . '"';
-						if (isset($_FILES['img_upload']['name'][$key + 1]) && count($_FILES['img_upload']['name']) < 2) $json .= ',';
+						if (isset($_FILES['img_upload']['name'][$key + 1]) && count($_FILES['img_upload']['name']) !== 2) $json .= ',';
 					}
 				}
 				$json .= '] }';
@@ -236,7 +239,6 @@
 			} else {
 				$message_403 = "You don't have access to the url you where trying to reach.";
 				show_error($message_403, 403);
-				die();
 			}
 		}
 		

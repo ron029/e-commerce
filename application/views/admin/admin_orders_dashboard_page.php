@@ -1,8 +1,5 @@
 <?php
 	/** @var Orders $orders */
-//	echo '<pre>';
-//	print_r($orders);
-//	echo '</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="en">

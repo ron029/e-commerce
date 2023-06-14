@@ -7,7 +7,7 @@
 	<title>(Dashboard Products)</title>
 	<script src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
 	<script src="<?= base_url('assets/js/jquery-ui.js') ?>"></script>
-	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/normalize.css') ?>"/>
+<!--	<link rel="stylesheet" type="text/css" href="--><?php //= base_url('assets/css/normalize.css') ?><!--"/>-->
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/style.css') ?>"/>
 	<script>
 		$.get('../products/get_products', function (res) {
@@ -193,7 +193,6 @@
 				// 	'</td>' +
 				// 	'</tr>';
 				$.get('../products/get_new_product', function (res) {
-					console.log(res.data)
 					var newProductHtmlStr =
 						'<tr class="' + newClassName + '">' +
 						'<td><img src="' + productImgSrc + '" alt="img"></td>' +
@@ -203,7 +202,7 @@
 						'<td>0</td>' +
 						'<td>' +
 						'<a href="../products/get_product_by_id/' + res.data['id'] +'" class="product_edit_link">edit</a>' +
-						'<a href=""><p class="product_delete_link">delete</p></a>' +
+						'<a href="asdfasfasd"><p class="product_delete_link">delete</p></a>' +
 						'</td>' +
 						'</tr>';
 					$("tbody").append(newProductHtmlStr);
@@ -211,9 +210,11 @@
 
 				// ajax
 				// display message
-
 				hideDialogBox();
-				// return false;
+				$.post($(this).parent().parent().attr('action'), $(this).serialize(), function (res) {
+					console.log(res);
+				});
+				return false;
 			});
 			/********************************************************************/
 
@@ -234,14 +235,28 @@
 				$(".modal_bg_delete_product").hide();
 			});
 
+
+
 			// submit delete form using the general ajax. Not this!
 			$(document).on("click", ".admin_product_delete input[type=submit]", function () {
 				$(".product_id_" + $(this).siblings().val()).remove();
-				$(this).parent().submit(function () {
-					return false;
-				});
+				// $(this).parent().submit(function () {
+				// 	alert('Ok');
+				//
+				// });
+				// $.post($(this).parent().attr('action'), $(this).serialize(), function (res) {
+				// 	// console.log(res);
+				// })
+				// console.log($(this).parent().attr('action'))
+				$(document).on('submit', $(this).parent(), function (res) {
+					// console.log(res);
+					// $.post($(this).parent().attr('action'), $(this).serialize(), function (res) {
+					// 	// console.log(res);
+					// })
+				})
 				$(".admin_product_delete").hide();
 				$(".modal_bg_delete_product").hide();
+				return false;
 			});
 			/**********************************************/
 
@@ -277,10 +292,10 @@
 				$(productIdEdited).children(".product_id + td + td").text(productInventory);
 				$(productIdEdited).children("td:first-child").find("img").attr("src", productImgSrc);
 				$(productIdEdited).children("td:first-child").find("img").attr("alt", productImgAlt);
-				$(this).parent().parent().submit(function () {
-					return false;
-				});
 				hideDialogBox();
+				$.post($(this).parent().parent().attr('action'), $(this).serialize(), function (res) {
+					console.log(res);
+				})
 				return false;
 			});
 			/**********************************************/
@@ -340,9 +355,9 @@
 						$(".waiting_icon").css("visibility", "hidden");
 						// return false;
 					}, 500);
-					$.post($(this).parent().attr('action'),  $(this).serialize(), function (res) {
-
-					});
+					// $.post($(this).parent().attr('action'),  $(this).serialize(), function (res) {
+					//
+					// });
 					// alert($(this).parent().attr('action'));
 					return false;
 				}
@@ -476,7 +491,7 @@
 			$(document).on("click", ".btn_img_upload_delete", function () {
 				img = $(this).siblings('input[type="checkbox"]').val();
 				$.post('../products/new_product/' + img, $(this).serialize(), function (res) {
-					console.log(res);
+					// console.log(res);
 				});
 				if (!$(this).siblings("input[type=checkbox]").attr("disabled")) {
 					resetCheckbox();
@@ -502,11 +517,11 @@
 					$(this).parent().parent().sortable("disable");
 				})
 				.on("mousedown", ".img_upload_section figure", function () {
-					console.log($(this).children().attr('src'));
+					// console.log($(this).children().attr('src'));
 					$(this).css("cursor", "grabbing");
 				})
 				.on("mouseup", ".img_upload_section figure", function () {
-					console.log($(this).children().attr('src'));
+					// console.log($(this).children().attr('src'));
 					$(this).css("cursor", "grab");
 				});
 			/********************************************************************/
@@ -565,7 +580,7 @@
 				categoriesOption +=
 					'<li class="product_category_edit_delete_section arr_' + category_id[i] + '">' +
 
-					'\n\t<form class="form_product_category_edit" action="../products/edit_category/' + category_id[i] + '" method="post">' +
+					'\n\t<form class="form_product_category_edit" action="<?= 'products/edit_category/'?>' + category_id[i] + '" method="post">' +
 					'\n\t\t<input class="product_category_id" type="hidden" name="product_category_id" value="' + category_id[i] + '"/>' +
 					'\n\t\t<input class="product_category_text_input" readonly name="name" type="text" value="' + categories[i] + '"/>' +
 					'\n\t</form>' +
@@ -653,7 +668,6 @@
 			previewWindow.document.write(previewWindowHTML);
 		}
 	</script>
-
 </head>
 <body>
 <header class="header_admin">
@@ -694,7 +708,7 @@
 <div class="admin_product_delete">
 	<p>Are you sure you want to delete product "<span class="delete_product_name">Product Name</span>" (ID: <span class="delete_product_id">ID</span>)</p>
 	<div>
-		<form action="../products/delete_product" method="post">
+		<form class="delete_product_now" action="<?= base_url('products/delete_product') ?>" method="post">
 			<input class="product_id" type="hidden" name="product_id" value="id"/>
 			<input type="submit" value="Yes"/>
 		</form>
@@ -714,7 +728,7 @@
 			      d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
 		</svg>
 	</button>
-	<form class="form_product_add_edit" action="../products/new_product" method="post" enctype="multipart/form-data">
+	<form class="form_product_add_edit" action="<?= base_url('products/new_product') ?>" method="post" enctype="multipart/form-data">
 		<p>Name: </p><input class="input_product_name" type="text" name="product_name"/>
 		<p>Description: </p><textarea class="input_product_desc" name="product_desc"></textarea>
 		<p>Categories: </p>

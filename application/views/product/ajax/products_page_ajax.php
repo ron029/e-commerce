@@ -37,7 +37,7 @@
                 ---><a class="next_page" href="">next</a>
 		</section>
 	</div>
-	<form class="sort_form" action="../shops/category" method="post">
+	<form class="sort_form" action="<?=base_url('shops/category') ?>" method="post">
 		<label for="sort">Sorted by </label>
 		<select class="sort" name="sort_by" id="sort">
 			<option value="0" <?php if ($this->session->flashdata('sort') !== null && ($this->session->flashdata('sort') == 0)) echo 'selected'; ?>>Price: Low to High</option>
