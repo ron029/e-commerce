@@ -14,7 +14,6 @@
 	<link rel="stylesheet" type="text/css" href="<?= base_url("assets/css/normalize.css") ?>" />
 	<link rel="stylesheet" type="text/css" href="<?= base_url("assets/css/style.css") ?>" />
     <script>
-
         /*  For pagination highlight    */
         function pageNumHighlight(pageNum){
             $(".pagination > a").css("background-color", "white").css("color", "blue");
@@ -24,10 +23,12 @@
                 }
             }
         }
+
         /**********************************************/
 		$.get('<?= base_url("shops/index_html") ?>', function (res) {
 			$('#shop').html(res);
 		});
+
 		$.get('<?= base_url("shops/carts_quantity")?>', function (res) {
 			if (parseInt(res) >= 0) {
 				var cart_quantity = parseInt(res);
@@ -36,6 +37,7 @@
 			}
 			$(".cart_quantity").text(cart_quantity);
 		});
+
         $(document).ready(function(){
 			$(document).on("change", ".sort", function () {
 				$.post($('.sort_form').attr('action'), $(this).serialize(), function (res) {

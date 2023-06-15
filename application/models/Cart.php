@@ -7,7 +7,7 @@
 		}
 		public function get_cart_product_details()
 		{
-			return $this->db->query("SELECT products.name, img_url, price, description, carts.quantity FROM products right join carts on products.id = carts.product_id")->result_array();
+			return $this->db->query("SELECT product_id,products.name, img_url, price, description, carts.quantity FROM products right join carts on products.id = carts.product_id")->result_array();
 		}
 		
 		

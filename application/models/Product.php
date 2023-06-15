@@ -81,6 +81,6 @@
 		
 		public function get_product()
 		{
-			return $this->db->query("SELECT * FROM capstone.products ORDER BY products.name ASC")->result_array();
+			return $this->db->query("SELECT * FROM capstone.products ORDER BY products.id DESC")->result_array();
 		}
 	}

@@ -54,6 +54,7 @@
 					$cart_item[$key]['description'] = $order_item['description'];
 					$cart_item[$key]['quantity'] = $order_item['quantity'];
 					$cart_item[$key]['images'] = json_decode($order_item['img_url'], TRUE)['imgid_no'];
+					$cart_item[$key]['product_id'] = $order_item['product_id'];
 					$carts_total_price[$order_key] += $order_item['price'];
 				}
 				$carts[$order_key] = $cart_item;

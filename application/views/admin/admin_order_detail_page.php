@@ -48,17 +48,17 @@
                 </thead>
                 <tbody>
 <?php
-	                    foreach ($order['order_items'] as $key => $item) {
+                    foreach ($order['order_items'] as $key => $item) {
 ?>
                     <tr class="color<?= ($key % 2) ? 1 : 0 ?>">
-                        <td><?= $item['name'] ?></td>
+                        <td><?= $item['product_id'] ?></td>
                         <td><?= $item['name'] ?></td>
                         <td>P <?= number_format($item['price'], 2) ?></td>
                         <td><?= $item['quantity'] ?></td>
                         <td>P <span class="items"><?= number_format($item['quantity'] * $item['price'], 2) ?></span></td>
                     </tr>
 <?php
-	                    }
+                    }
 ?>
                 </tbody>
             </table>
@@ -66,7 +66,7 @@
                 <p class="shipped_color">Status: <span>shipped</span></p>
                 <aside>
                     <span><p>Sub total: </p><p class="sub_total">P <?= number_format($order['carts_total_price'], 2) ?></p></span>
-                    <span><p>Shipping: </p><p class="shipping">P <?= number_format($order['shipping_fee'], 2) ?></p></span>
+                    <span><p>Shipping: </p><p class="shipping">P <?= number_format($order['shipping_fee'] + 147, 2) ?></p></span>
                     <span><p>Total Price: </p><p class="total_price">P <?= number_format(($order['carts_total_price'] + 150), 2) ?></p></span>
                 </aside>
             </div>
