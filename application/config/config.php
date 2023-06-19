@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost:9001';
+$config['base_url'] = 'http://localhost:9001/';
 
 /*
 |--------------------------------------------------------------------------
@@ -124,7 +124,7 @@ $config['subclass_prefix'] = 'MY_';
 |--------------------------------------------------------------------------
 |
 | Enabling this setting will tell CodeIgniter to look for a Composer
-| package auto-loader script in application/vendor/autoload.php.
+| package autoloader script in application/vendor/autoload.php.
 |
 |	$config['composer_autoload'] = TRUE;
 |
@@ -150,7 +150,7 @@ $config['composer_autoload'] = FALSE;
 | get a warning message.
 |
 | As a security measure you are STRONGLY encouraged to restrict URLs to
-| as few characters as possible.  By default only these are allowed: a-z 0-9~%.:_-
+| as few characters as possible.  By default, only these are allowed: a-z 0-9~%.:_-
 |
 | Leave blank to allow all characters -- but only if you are insane.
 |

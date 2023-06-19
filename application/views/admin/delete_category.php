@@ -1,7 +1,7 @@
 <?php
-	/** @var Products $id - category id of the category you wish to delete.
-	 * @var Products $name - name of the category you wish to delete.
-	*/
+/** @var Products $id - category id of the category you wish to delete.
+ * @var Products $name - name of the category you wish to delete.
+ */
 ?>
 <div class="category_confirm_delete">
 	<p>Are you sure you want to delete "<span class="category_name"><?= $name['name'] ?></span>" category?</p>

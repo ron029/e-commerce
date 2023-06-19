@@ -7,63 +7,64 @@
 	<title>(Dashboard Products)</title>
 	<script src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
 	<script src="<?= base_url('assets/js/jquery-ui.js') ?>"></script>
-	<link rel="stylesheet" type="text/css" href="<?= base_url("assets/css/normalize.css") ?>" />
-	<link rel="stylesheet" type="text/css" href="<?= base_url("assets/css/style.css") ?>" />
+	<link rel="stylesheet" type="text/css" href="<?= base_url("assets/css/normalize.css") ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?= base_url("assets/css/style.css") ?>"/>
 	<script>
 
 		/*  For pagination highlight    */
-		function pageNumHighlight(pageNum){
+		function pageNumHighlight(pageNum) {
 			$(".pagination > a").css("background-color", "white").css("color", "blue");
-			for(var i = 0; i < document.querySelectorAll(".pagination > a").length; i++){
-				if(pageNum == $(".pagination > a:nth-child(" + i + ")").text()){
+			for (var i = 0; i < document.querySelectorAll(".pagination > a").length; i++) {
+				if (pageNum == $(".pagination > a:nth-child(" + i + ")").text()) {
 					$(".pagination > a:nth-child(" + i + ")").css("background-color", "#1975ff").css("color", "white");
 				}
 			}
 		}
+
 		/**********************************************/
 
 		/*  Reset the UI/Display of product categories    */
-		function resetCategoryDisplay(){
+		function resetCategoryDisplay() {
 			$(".product_categories").hide();
 			$(".product_category_text_input").attr("readonly", true).css("outline", "none").css("cursor", "default");
 			$(".dummy_select_tag").css("border", "0.3px solid rgb(118, 118, 118)");
 			$(".bg_category_confirm_delete").hide();
 			$(".waiting_icon").css("visibility", "hidden");
 		}
+
 		/**********************************************/
 
 		/*  Reset the attributes of checkbox    */
-		function resetCheckbox(){
+		function resetCheckbox() {
 			$(".img_upload_section input[type=checkbox]").attr("disabled", false);
 			$(".img_upload_section input[type=checkbox]").siblings("label").css("color", "black");
 		}
+
 		/**********************************************/
 
 		/*  Reset the attributes of checkbox    */
-		function hideDialogBox(){
+		function hideDialogBox() {
 			$("dialog.admin_products_add_edit").hide();
 			$(".admin_product_delete").hide();
 			$(".modal_bg").hide();
 		}
+
 		/**********************************************/
 
 
-
-
-		$(document).ready(function(){
-
+		$(document).ready(function () {
 			hideDialogBox();
 
 			/*  Pagination at footer    */
 			var pageNum = 1;
 			pageNumHighlight(pageNum);
 
-			$(document).on("click", ".pagination > a:not(.next_page)", function(){
+			$(document).on("click", ".pagination > a:not(.next_page)", function () {
 				pageNum = $(this).text();
 				pageNumHighlight(pageNum);
 				return false;
 			});
-			$(document).on("click", ".next_page", function(){
+			$(document).on("click", ".next_page", function () {
 				pageNum++;
 				pageNumHighlight(pageNum);
 				return false;
@@ -71,7 +72,7 @@
 			/**********************************************/
 
 			/*  Open add new product dialog box    */
-			$(document).on("click", ".btn_add_product", function(){
+			$(document).on("click", ".btn_add_product", function () {
 				$(".add_edit_product_header").text("Add a new product");
 				$(".input_product_name").val("");
 				$(".input_product_desc").val("");
@@ -88,7 +89,7 @@
 			/**********************************************/
 
 			/*  Clicking add button will submit the form using ajax    */
-			$(document).on("click", ".add_product_submit", function(){
+			$(document).on("click", ".add_product_submit", function () {
 				var className = $("tbody tr:last-child").attr("class").split(" ");
 				var colorNum = className[0].split("color")[1];
 				var productID = className[1].split("product_id_")[1];
@@ -103,9 +104,9 @@
 				var imgCheckbox = $(".img_upload_section > input[type=checkbox]");
 				var prevProductImg = [];
 				var mainIndexImg = 0;
-				for(var i = 0; i < imgUpload.length; i++){
+				for (var i = 0; i < imgUpload.length; i++) {
 					prevProductImg[i] = imgUpload[i].currentSrc;
-					if(imgCheckbox[i].checked){
+					if (imgCheckbox[i].checked) {
 						mainIndexImg = i;
 					}
 				}
@@ -136,7 +137,7 @@
 			/********************************************************************/
 
 			/*  Open delete product dialog box    */
-			$(document).on("click", ".product_delete_link", function(){
+			$(document).on("click", ".product_delete_link", function () {
 				var productID = $(this).parent().parent().siblings(".product_id").text();
 				var productName = $(this).parent().parent().siblings(".product_id + td").text();
 				$(".admin_product_delete .product_id").val(productID);
@@ -147,22 +148,24 @@
 				return false
 			});
 
-			$(document).on("click", ".admin_product_delete > div > button, .modal_bg_delete_product", function(){
+			$(document).on("click", ".admin_product_delete > div > button, .modal_bg_delete_product", function () {
 				$(".admin_product_delete").hide();
 				$(".modal_bg_delete_product").hide();
 			});
 
 			// submit delete form using the general ajax. Not this!
-			$(document).on("click", ".admin_product_delete input[type=submit]", function(){
+			$(document).on("click", ".admin_product_delete input[type=submit]", function () {
 				$(".product_id_" + $(this).siblings().val()).remove();
-				$(this).parent().submit(function(){ return false; });
+				$(this).parent().submit(function () {
+					return false;
+				});
 				$(".admin_product_delete").hide();
 				$(".modal_bg_delete_product").hide();
 			});
 			/**********************************************/
 
 			/*  Open edit product dialog box    */
-			$(document).on("click", ".product_edit_link", function(){
+			$(document).on("click", ".product_edit_link", function () {
 				var productID = $(this).parent().parent().siblings(".product_id").text();
 				var headerStr = "Edit Product - ID " + productID;
 				var productName = $(this).parent().parent().siblings(".product_id + td").text();
@@ -208,7 +211,7 @@
 
 			/*  Clicking add button will submit the form using ajax    */
 			// submit form using the general ajax. Not this!
-			$(document).on("click", ".edit_product_submit", function(){
+			$(document).on("click", ".edit_product_submit", function () {
 				var productIdEdited = ".product_id_" + $(".products_add_edit_btn .product_id").val();
 				var productName = $(".input_product_name").val();
 				var productInventory = $(".input_product_qty").val();
@@ -217,9 +220,9 @@
 				var imgCheckbox = $(".img_upload_section > input[type=checkbox]");
 				var prevProductImg = [];
 				var mainIndexImg = 0;
-				for(var i = 0; i < imgUpload.length; i++){
+				for (var i = 0; i < imgUpload.length; i++) {
 					prevProductImg[i] = imgUpload[i].currentSrc;
-					if(imgCheckbox[i].checked){
+					if (imgCheckbox[i].checked) {
 						mainIndexImg = i;
 					}
 				}
@@ -230,7 +233,9 @@
 				$(productIdEdited).children(".product_id + td + td").text(productInventory);
 				$(productIdEdited).children("td:first-child").find("img").attr("src", productImgSrc);
 				$(productIdEdited).children("td:first-child").find("img").attr("alt", productImgAlt);
-				$(this).parent().parent().submit(function(){ return false; });
+				$(this).parent().parent().submit(function () {
+					return false;
+				});
 				hideDialogBox();
 				return false;
 			});
@@ -241,7 +246,7 @@
 			var categories = ["Shirt", "Hat", "Mug", "Pant", "Key Chain", "Belt"];
 			var categoriesOption = "<form></form>";
 			var selectOptions = "";
-			for(var i = 0; i < categories.length; i++){
+			for (var i = 0; i < categories.length; i++) {
 				categoriesOption +=
 					'<li class="product_category_edit_delete_section arr_' + i + '">' +
 
@@ -275,7 +280,7 @@
 			/**********************************************/
 
 			/*  Show the options/categories for the dummy select tag    */
-			$(document).on("click", ".dummy_select_tag", function(){
+			$(document).on("click", ".dummy_select_tag", function () {
 				$(this).css("border", "2px solid black");
 				$(".product_categories").toggle();
 			});
@@ -283,15 +288,15 @@
 
 			/*  Show the edit/delete buttons on hover.    */
 			$(document)
-				.on("mouseenter", ".product_category_edit_delete_section",  function(){
+				.on("mouseenter", ".product_category_edit_delete_section", function () {
 					$(this).children(".product_category_btn").css("visibility", "visible");
 					$(this).children("form").children().css("cursor", "default").css("background-color", "#00aff8");
 					$(this).css("cursor", "default").css("background-color", "#00aff8");
-					if($(this).children("form").children("input[type=text]").attr("readonly") == null){
+					if ($(this).children("form").children("input[type=text]").attr("readonly") == null) {
 						$(this).children("form").children("input[type=text]").css("cursor", "text");
 					}
 				})
-				.on("mouseleave", ".product_category_edit_delete_section",  function(){
+				.on("mouseleave", ".product_category_edit_delete_section", function () {
 					$(this).children(".product_category_btn").css("visibility", "hidden");
 					$(this).children("form").children().css("background-color", "white");
 					$(this).css("background-color", "white");
@@ -299,8 +304,8 @@
 			/**********************************************/
 
 			/*  Assign the value of selected option to the dummy select tag    */
-			$(document).on("click", ".form_product_category_edit", function(){
-				if($(this).children(".product_category_text_input").attr("readonly") != null){
+			$(document).on("click", ".form_product_category_edit", function () {
+				if ($(this).children(".product_category_text_input").attr("readonly") != null) {
 					$(".dummy_select_tag span:first-child").text($(this).children(".product_category_text_input").val());
 					resetCategoryDisplay();
 				}
@@ -308,20 +313,22 @@
 			/**********************************************/
 
 			/*  Edit the value of the specific category    */
-			$(document).on("click", ".btn_product_category_edit", function(){
+			$(document).on("click", ".btn_product_category_edit", function () {
 				$(".product_category_text_input").attr("readonly", true).css("outline", "none");
 				$(this).parent().siblings("form").children(".product_category_text_input").attr("readonly", false).css("outline", "2.5px solid black").css("cursor", "text");
 			});
 
 			// This should be on ajax
-			$(document).on("mouseleave keypress", ".product_category_text_input", function(){
-				if($(this).attr("readonly") != "readonly"){
+			$(document).on("mouseleave keypress", ".product_category_text_input", function () {
+				if ($(this).attr("readonly") != "readonly") {
 					// display waiting icon before sending
 					$(this).parent().siblings(".product_category_btn").children(".waiting_icon").css("visibility", "visible");
 					// activate ajax and send form.
-					$(this).parent().submit(function(){ return false; });
+					$(this).parent().submit(function () {
+						return false;
+					});
 					// hide waiting icon after receiving ang changing all data.
-					setTimeout(function(){
+					setTimeout(function () {
 						$(".waiting_icon").css("visibility", "hidden");
 					}, 500);
 				}
@@ -329,7 +336,7 @@
 			/**********************************************/
 
 			/*  Show the delete category confirmation box to confirm delete    */
-			$(document).on("click", ".btn_product_category_delete", function(){
+			$(document).on("click", ".btn_product_category_delete", function () {
 				resetCategoryDisplay();
 
 				var categoryName = $(this).parent().siblings("form").children(".product_category_text_input").val();
@@ -340,24 +347,26 @@
 				$(".bg_category_confirm_delete").show();
 			});
 
-			$(document).on("click", ".category_confirm_delete > div > button, .bg_category_confirm_delete", function(){
+			$(document).on("click", ".category_confirm_delete > div > button, .bg_category_confirm_delete", function () {
 				$(".bg_category_confirm_delete").hide();
 			});
 
 			// submit delete form using the general ajax. Not this!
-			$(document).on("click", ".category_confirm_delete input[type=submit]", function(){
+			$(document).on("click", ".category_confirm_delete input[type=submit]", function () {
 				$("." + $(this).siblings().val()).remove();
-				$(this).parent().submit(function(){ return false; });
+				$(this).parent().submit(function () {
+					return false;
+				});
 				resetCategoryDisplay();
 			});
 			/**********************************************/
 
 			/*  Stop propagation of clicks on dummy select tag and the confirm date box. And reset display when click outside of these elements    */
-			$(document).on("click", ".select_tag_container, .category_confirm_delete", function(e){
+			$(document).on("click", ".select_tag_container, .category_confirm_delete", function (e) {
 				e.stopPropagation();
 			});
 
-			$(document).on("click", "html", function(){
+			$(document).on("click", "html", function () {
 				resetCategoryDisplay();
 			});
 			/**********************************************/
@@ -367,17 +376,16 @@
 				This will render the preview of uploaded images.
 			*/
 			function readURL(input) {
-				if(!input.files || !input.files[0]){
+				if (!input.files || !input.files[0]) {
 					return false;
-				}
-				else if($(".img_upload_section").length + input.files.length > 4){
+				} else if ($(".img_upload_section").length + input.files.length > 4) {
 					alert("Only four (4) images in total are allowed to be upload.");
 					return false;
 				}
 
 				var reader = new FileReader();
 				var onLoadCounter = 0;
-				reader.addEventListener('load', function(e){
+				reader.addEventListener('load', function (e) {
 					// reader.onload = function (e) {
 					var htmlStr = "" +
 						'<li class="img_upload_section">' +
@@ -401,15 +409,15 @@
 				reader.readAsDataURL(input.files[0]);
 
 				var counter = 1;
-				reader.onloadend = function(e){
-					if(counter < input.files.length){
+				reader.onloadend = function (e) {
+					if (counter < input.files.length) {
 						reader.readAsDataURL(input.files[counter]);
 						counter++;
 					}
 				}
 			}
 
-			$(document).on("change", "#img_upload", function(){
+			$(document).on("change", "#img_upload", function () {
 				readURL(this); // javascript solution
 			});
 
@@ -417,11 +425,10 @@
 
 
 			/*  Disable other checkbox when a checkbox is checked    */
-			$(document).on("click", ".img_upload_section input[type=checkbox]", function(){
-				if($(".img_upload_section input[type=checkbox]").not(this).attr("disabled")){
+			$(document).on("click", ".img_upload_section input[type=checkbox]", function () {
+				if ($(".img_upload_section input[type=checkbox]").not(this).attr("disabled")) {
 					resetCheckbox();
-				}
-				else{
+				} else {
 					$(".img_upload_section input[type=checkbox]").not(this).attr("disabled", true);
 					$(".img_upload_section input[type=checkbox]").not(this).siblings("label").css("color", "gray");
 				}
@@ -430,19 +437,19 @@
 
 			/*  Remove the uploaded photo and verify if checkbox is checked to reset the checkbox    */
 			$(document)
-				.on("mouseover", ".img_upload_section",  function(){
+				.on("mouseover", ".img_upload_section", function () {
 					$(this).children(".btn_img_upload_delete").css("visibility", "visible");
 					$(this).children(".btn_img_upload_delete").css("cursor", "pointer");
 					$(this).css("outline", "2px solid #1975ff");
 				})
-				.on("mouseleave", ".img_upload_section",  function(){
+				.on("mouseleave", ".img_upload_section", function () {
 					$(this).children(".btn_img_upload_delete").css("visibility", "hidden");
 					$(this).children(".btn_img_upload_delete").css("cursor", "default");
 					$(this).css("outline", "none");
 				});
 
-			$(document).on("click", ".btn_img_upload_delete", function(){
-				if(!$(this).siblings("input[type=checkbox]").attr("disabled")){
+			$(document).on("click", ".btn_img_upload_delete", function () {
+				if (!$(this).siblings("input[type=checkbox]").attr("disabled")) {
 					resetCheckbox();
 				}
 				$(this).parent().remove();
@@ -451,43 +458,43 @@
 
 			/*  For sorting/arrangement of photo    */
 			$(document)
-				.on("mouseover", ".img_upload_section figure",  function(){
+				.on("mouseover", ".img_upload_section figure", function () {
 					$(this).parent().parent().sortable({
-						start: function(e, ui){
+						start: function (e, ui) {
 							ui.placeholder.height(ui.item.height());
 						}
 					});
 					$(this).parent().parent().sortable("enable");
 					$(this).css("cursor", "grab");
 				})
-				.on("mouseleave", ".img_upload_section figure",  function(){
+				.on("mouseleave", ".img_upload_section figure", function () {
 					$(this).parent().css("background-color", "white");
 					$(this).parent().parent().sortable("disable");
 				})
-				.on("mousedown", ".img_upload_section figure",  function(){
+				.on("mousedown", ".img_upload_section figure", function () {
 					$(this).css("cursor", "grabbing");
 				})
-				.on("mouseup", ".img_upload_section figure",  function(){
+				.on("mouseup", ".img_upload_section figure", function () {
 					$(this).css("cursor", "grab");
 				});
 			/********************************************************************/
 
 			/*  Clicking cancel or close will close the dialog box    */
-			$(document).on("click", ".btn_cancel_products_add_edit, .btn_close", function(){
+			$(document).on("click", ".btn_cancel_products_add_edit, .btn_close", function () {
 				hideDialogBox();
 				return false;
 			});
 			/********************************************************************/
 
 			/*  Clicking preview button will display a new tab of Preview page    */
-			$(document).on("click", ".btn_preview_products_add_edit", function(){
+			$(document).on("click", ".btn_preview_products_add_edit", function () {
 				var prevProductName = $(".form_product_add_edit").children(".input_product_name").val();
 				var prevProductDesc = $(".form_product_add_edit").children(".input_product_desc").val();
 				var prevProductPrice = $(".form_product_add_edit").children(".input_product_price").val();
 
 				var totalOptions = 3;
 				var prevProductPriceOption = [];
-				for(var i = 0; i < totalOptions; i++){
+				for (var i = 0; i < totalOptions; i++) {
 					prevProductPriceOption[i] = i + 1 + ' ($' + prevProductPrice * (i + 1) + ')';
 				}
 
@@ -495,9 +502,9 @@
 				var imgCheckbox = $(".img_upload_section > input[type=checkbox]");
 				var prevProductImg = [];
 				var mainIndexImg = 0;
-				for(var i = 0; i < imgUpload.length; i++){
+				for (var i = 0; i < imgUpload.length; i++) {
 					prevProductImg[i] = imgUpload[i].currentSrc;
-					if(imgCheckbox[i].checked){
+					if (imgCheckbox[i].checked) {
 						mainIndexImg = i;
 					}
 				}
@@ -511,7 +518,7 @@
 	</script>
 	<script>
 		/*  Function for Preview in new tab    */
-		function preview(prevProductName, prevProductDesc, prevProductPriceOption, prevProductImg, mainIndexImg){
+		function preview(prevProductName, prevProductDesc, prevProductPriceOption, prevProductImg, mainIndexImg) {
 			var previewWindowHTML = '' +
 				'<!DOCTYPE html>' +
 				'<html lang="en">' +
@@ -519,7 +526,7 @@
 				'<meta charset="UTF-8">' +
 				'<meta http-equiv="X-UA-Compatible" content="IE=edge">' +
 				'<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
-				'<title>(Product Page) '+ prevProductName +' | Lashopda</title>' +
+				'<title>(Product Page) ' + prevProductName + ' | Lashopda</title>' +
 
 				'<link rel="stylesheet" type="text/css" href="../../../application/views/assets/css/normalize.css" />' +
 				'<link rel="stylesheet" type="text/css" href="../../../application/views/assets/css/style.css" />' +
@@ -537,7 +544,7 @@
 				'<aside class="img_section">' +
 				'<img class="main_img" src="' + prevProductImg[mainIndexImg] + '" alt="img"/>' +
 				'<section>';
-			for(var i = 0; i < prevProductImg.length; i++){
+			for (var i = 0; i < prevProductImg.length; i++) {
 				previewWindowHTML += '<img class="sub_img" src="' + prevProductImg[i] + '" alt="img"/>'
 			}
 			// '<img class="sub_img" src="' + prevProductImg + '" alt="img"/>' +
@@ -577,13 +584,13 @@
 	<a href="admin_orders_dashboard_page.html"><h2>Dashboard</h2></a>
 	<a href="admin_orders_dashboard_page.html"><h3>Orders</h3></a>
 	<a href="admin_products_dashboard_page.html"><h3>Products</h3></a>
-	<a class="nav_end" href="../login_register/login_page.html"><h3>Log off</h3></a>
+	<a class="nav_end" href="<?= base_url('users/logout') ?>"><h3>Log off</h3></a>
 </header>
 <main>
 	<p class="message_admin_products"></p>
 	<section class="form_admin_products">
 		<form class="form_admin_products_search" action="" method="post">
-			<input type="search" name="admin_products_search" placeholder="&#x1F50D; search" />
+			<input type="search" name="admin_products_search" placeholder="&#x1F50D; search"/>
 		</form>
 		<!-- <form class="form_admin_products_add" action="" method="post">
 			<input class="btn_add_product" type="submit" name="add_product" value="Add new product" />
@@ -655,11 +662,12 @@
 	</section>
 </main>
 <div class="admin_product_delete">
-	<p>Are you sure you want to delete product "<span class="delete_product_name">Product Name</span>" (ID: <span class="delete_product_id">ID</span>)</p>
+	<p>Are you sure you want to delete product "<span class="delete_product_name">Product Name</span>" (ID: <span
+			class="delete_product_id">ID</span>)</p>
 	<div>
 		<form action="" method="post">
 			<input class="product_id" type="hidden" name="product_id" value="id"/>
-			<input type="submit" value="Yes" />
+			<input type="submit" value="Yes"/>
 		</form>
 		<button type="button">No</button>
 	</div>
@@ -669,9 +677,12 @@
 <dialog class="admin_products_add_edit">
 	<h3 class="add_edit_product_header">Edit Product - ID 0</h3>
 	<button class="btn_close">
-		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-			<path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-			<path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
+			 viewBox="0 0 16 16">
+			<path fill-rule="evenodd"
+				  d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+			<path fill-rule="evenodd"
+				  d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
 		</svg>
 	</button>
 	<form class="form_product_add_edit" action="" method="post">
@@ -686,7 +697,8 @@
 		<p>or add new category: </p><input type="text" name="product_add_category"/>
 		<p>Price: </p><input class="input_product_price" type="number" name="product_price" min="0.01" step="0.01"/>
 		<p>Quantity (Inventory): </p><input class="input_product_qty" type="number" name="product_qty"/>
-		<p class="img_field_name">Images: </p><input id="img_upload" type="file" name="product_img_file" multiple accept=".png, .jpg, .jpeg" />
+		<p class="img_field_name">Images: </p><input id="img_upload" type="file" name="product_img_file" multiple
+													 accept=".png, .jpg, .jpeg"/>
 		<label class="file_upload_label" for="img_upload">Upload</label>
 		<ul class="img_upload_container">
 		</ul>
@@ -694,7 +706,7 @@
 			<button class="btn_cancel_products_add_edit" type="button">Cancel</button>
 			<button class="btn_preview_products_add_edit" type="button">Preview</button>
 			<input class="product_id" type="hidden" name="product_id" value=""/>
-			<input class="btn_submit_products_add_edit" type="submit" value="Update" />
+			<input class="btn_submit_products_add_edit" type="submit" value="Update"/>
 		</div>
 	</form>
 	<div class="bg_category_confirm_delete">
@@ -703,7 +715,7 @@
 			<div>
 				<form action="" method="post">
 					<input class="category_id" type="hidden" name="category_id" value="id"/>
-					<input type="submit" value="Yes" />
+					<input type="submit" value="Yes"/>
 				</form>
 				<button type="button">No</button>
 			</div>
