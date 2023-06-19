@@ -7,9 +7,21 @@
 	<title>(Dashboard Products)</title>
 	<script src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
 	<script src="<?= base_url('assets/js/jquery-ui.js') ?>"></script>
-	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/normalize.css') ?>"/>
+	<!--	<link rel="stylesheet" type="text/css" href="--><?php //= base_url('assets/css/normalize.css') ?><!--"/>-->
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/style.css') ?>"/>
 	<script>
+
+		$(document).ready(function () {
+			$('.form_admin_products_search input[type=search]').on("keyup", function () {
+				console.log($(this).val());
+				$(this).parent().submit();
+			});
+			$('.form_admin_products_search').on('submit', function ($data) {
+				console.log($data)
+				return false;
+			});
+		});
+
 		$.get('../products/get_products', function (res) {
 			$('#products').html(res);
 		});
@@ -42,7 +54,7 @@
 						'<path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>' +
 						'</svg>' +
 						// '<input type="checkbox" name="is_img_upload_main_id" value="filename" />' +
-						'<input type="checkbox" name="img_upload_main_id[]" value="' + productImgSrc[key] +'" />' +
+						'<input type="checkbox" name="img_upload_main_id[]" value="' + productImgSrc[key] + '" />' +
 						'<label>main</label>' +
 						'</li>'
 					;
@@ -109,7 +121,6 @@
 		}
 
 		/**********************************************/
-
 
 		$(document).ready(function () {
 
@@ -193,17 +204,16 @@
 				// 	'</td>' +
 				// 	'</tr>';
 				$.get('../products/get_new_product', function (res) {
-					console.log(res.data)
 					var newProductHtmlStr =
 						'<tr class="' + newClassName + '">' +
 						'<td><img src="' + productImgSrc + '" alt="img"></td>' +
 						'<td class="product_id">' + res.data['id'] + '</td>' +
-						'<td>' + res.data['name']  + '</td>' +
+						'<td>' + res.data['name'] + '</td>' +
 						'<td>' + res.data['stock'] + '</td>' +
 						'<td>0</td>' +
 						'<td>' +
-						'<a href="../products/get_product_by_id/' + res.data['id'] +'" class="product_edit_link">edit</a>' +
-						'<a href=""><p class="product_delete_link">delete</p></a>' +
+						'<a href="../products/get_product_by_id/' + res.data['id'] + '" class="product_edit_link">edit</a>' +
+						'<a href="asdfasfasd"><p class="product_delete_link">delete</p></a>' +
 						'</td>' +
 						'</tr>';
 					$("tbody").append(newProductHtmlStr);
@@ -211,9 +221,11 @@
 
 				// ajax
 				// display message
-
 				hideDialogBox();
-				// return false;
+				$.post($(this).parent().parent().attr('action'), $(this).serialize(), function (res) {
+					console.log(res);
+				});
+				return false;
 			});
 			/********************************************************************/
 
@@ -234,14 +246,27 @@
 				$(".modal_bg_delete_product").hide();
 			});
 
+
 			// submit delete form using the general ajax. Not this!
 			$(document).on("click", ".admin_product_delete input[type=submit]", function () {
 				$(".product_id_" + $(this).siblings().val()).remove();
-				$(this).parent().submit(function () {
-					return false;
-				});
+				// $(this).parent().submit(function () {
+				// 	alert('Ok');
+				//
+				// });
+				// $.post($(this).parent().attr('action'), $(this).serialize(), function (res) {
+				// 	// console.log(res);
+				// })
+				// console.log($(this).parent().attr('action'))
+				$(document).on('submit', $(this).parent(), function (res) {
+					// console.log(res);
+					// $.post($(this).parent().attr('action'), $(this).serialize(), function (res) {
+					// 	// console.log(res);
+					// })
+				})
 				$(".admin_product_delete").hide();
 				$(".modal_bg_delete_product").hide();
+				return false;
 			});
 			/**********************************************/
 
@@ -266,8 +291,8 @@
 				var productImgAlt = "img";
 				var selectedCategory = $(".selected_category").text();
 				let set_images = [];
-				$($(".img_upload_container").children('li').children('figure').children('img')).each( function (index) {
-					if(!($(this).attr('src').length > 200)) {
+				$($(".img_upload_container").children('li').children('figure').children('img')).each(function (index) {
+					if (!($(this).attr('src').length > 200)) {
 						set_images[index] = $(this).attr('data-src');
 					}
 				});
@@ -277,10 +302,10 @@
 				$(productIdEdited).children(".product_id + td + td").text(productInventory);
 				$(productIdEdited).children("td:first-child").find("img").attr("src", productImgSrc);
 				$(productIdEdited).children("td:first-child").find("img").attr("alt", productImgAlt);
-				$(this).parent().parent().submit(function () {
-					return false;
-				});
 				hideDialogBox();
+				$.post($(this).parent().parent().attr('action'), $(this).serialize(), function (res) {
+					console.log(res);
+				})
 				return false;
 			});
 			/**********************************************/
@@ -340,9 +365,9 @@
 						$(".waiting_icon").css("visibility", "hidden");
 						// return false;
 					}, 500);
-					$.post($(this).parent().attr('action'),  $(this).serialize(), function (res) {
-
-					});
+					// $.post($(this).parent().attr('action'),  $(this).serialize(), function (res) {
+					//
+					// });
 					// alert($(this).parent().attr('action'));
 					return false;
 				}
@@ -374,7 +399,7 @@
 			$(document).on("click", ".category_confirm_delete input[type=submit]", function () {
 				$(".arr_" + $(this).siblings().val()).remove();
 				$(this).parent().submit(function () {
-					$.post($(this).attr('action'),  $(this).serialize(), function () {
+					$.post($(this).attr('action'), $(this).serialize(), function () {
 
 					});
 					return false;
@@ -410,21 +435,21 @@
 				var onLoadCounter = 0;
 				reader.addEventListener('load', function (e) {
 					/** Occur to append image */
-					// reader.onload = function (e) {
+						// reader.onload = function (e) {
 					var htmlStr = "" +
-						'<li class="img_upload_section">' +
-						'<figure>' +
-						'<img src="' + e.target.result + '" alt="' + input.files[onLoadCounter].name + '" />' +
-						'</figure>' +
-						'<p class="img_filename">' + input.files[onLoadCounter].name + '</p>' +
-						'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash btn_img_upload_delete" viewBox="0 0 16 16">' +
-						'<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>' +
-						'<path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>' +
-						'</svg>' +
-						// '<input type="checkbox" name="is_img_upload_main_id" value="filename" />' +
-						'<input type="checkbox" name="img_upload_main_id" value="' + input.files[onLoadCounter].name + '" />' +
-						'<label>main</label>' +
-						'</li>'
+							'<li class="img_upload_section">' +
+							'<figure>' +
+							'<img src="' + e.target.result + '" alt="' + input.files[onLoadCounter].name + '" />' +
+							'</figure>' +
+							'<p class="img_filename">' + input.files[onLoadCounter].name + '</p>' +
+							'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash btn_img_upload_delete" viewBox="0 0 16 16">' +
+							'<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>' +
+							'<path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>' +
+							'</svg>' +
+							// '<input type="checkbox" name="is_img_upload_main_id" value="filename" />' +
+							'<input type="checkbox" name="img_upload_main_id" value="' + input.files[onLoadCounter].name + '" />' +
+							'<label>main</label>' +
+							'</li>'
 					;
 
 					onLoadCounter++;
@@ -476,7 +501,7 @@
 			$(document).on("click", ".btn_img_upload_delete", function () {
 				img = $(this).siblings('input[type="checkbox"]').val();
 				$.post('../products/new_product/' + img, $(this).serialize(), function (res) {
-					console.log(res);
+					// console.log(res);
 				});
 				if (!$(this).siblings("input[type=checkbox]").attr("disabled")) {
 					resetCheckbox();
@@ -502,11 +527,11 @@
 					$(this).parent().parent().sortable("disable");
 				})
 				.on("mousedown", ".img_upload_section figure", function () {
-					console.log($(this).children().attr('src'));
+					// console.log($(this).children().attr('src'));
 					$(this).css("cursor", "grabbing");
 				})
 				.on("mouseup", ".img_upload_section figure", function () {
-					console.log($(this).children().attr('src'));
+					// console.log($(this).children().attr('src'));
 					$(this).css("cursor", "grab");
 				});
 			/********************************************************************/
@@ -565,7 +590,7 @@
 				categoriesOption +=
 					'<li class="product_category_edit_delete_section arr_' + category_id[i] + '">' +
 
-					'\n\t<form class="form_product_category_edit" action="../products/edit_category/' + category_id[i] + '" method="post">' +
+					'\n\t<form class="form_product_category_edit" action="<?= 'products/edit_category/'?>' + category_id[i] + '" method="post">' +
 					'\n\t\t<input class="product_category_id" type="hidden" name="product_category_id" value="' + category_id[i] + '"/>' +
 					'\n\t\t<input class="product_category_text_input" readonly name="name" type="text" value="' + categories[i] + '"/>' +
 					'\n\t</form>' +
@@ -592,6 +617,7 @@
 			}
 			$(".product_categories").html(categoriesOption);
 		}
+
 		/*  Function for Preview in new tab    */
 		function preview(prevProductName, prevProductDesc, prevProductPriceOption, prevProductImg, mainIndexImg) {
 			var previewWindowHTML = '' +
@@ -653,20 +679,21 @@
 			previewWindow.document.write(previewWindowHTML);
 		}
 	</script>
-
 </head>
 <body>
 <header class="header_admin">
 	<a href="<?= base_url('dashboard/orders') ?>"><h2>Dashboard</h2></a>
 	<a href="<?= base_url('dashboard/orders') ?>"><h3>Orders</h3></a>
 	<a href="<?= base_url('dashboard/products') ?>"><h3>Products</h3></a>
-	<a class="nav_end" href="<?= base_url('admin') ?>"><h3>Log off</h3></a>
+	<a class="nav_end" href="<?= base_url('users/logout') ?>"><h3>Log off</h3></a>
 </header>
 <main>
 	<p class="message_admin_products"></p>
 	<section class="form_admin_products">
-		<form class="form_admin_products_search" action="" method="post">
-			<input type="search" name="admin_products_search" placeholder="&#x1F50D; search"/>
+		<form class="form_admin_products_search" action="products/products_search" method="post">
+			<label>
+				<input type="search" name="admin_products_search" placeholder="&#x1F50D; search"/>
+			</label>
 		</form>
 		<!-- <form class="form_admin_products_add" action="" method="post">
 			<input class="btn_add_product" type="submit" name="add_product" value="Add new product" />
@@ -692,9 +719,10 @@
 	</section>
 </main>
 <div class="admin_product_delete">
-	<p>Are you sure you want to delete product "<span class="delete_product_name">Product Name</span>" (ID: <span class="delete_product_id">ID</span>)</p>
+	<p>Are you sure you want to delete product "<span class="delete_product_name">Product Name</span>" (ID: <span
+			class="delete_product_id">ID</span>)</p>
 	<div>
-		<form action="../products/delete_product" method="post">
+		<form class="delete_product_now" action="<?= base_url('products/delete_product') ?>" method="post">
 			<input class="product_id" type="hidden" name="product_id" value="id"/>
 			<input type="submit" value="Yes"/>
 		</form>
@@ -707,27 +735,31 @@
 	<h3 class="add_edit_product_header">Edit Product - ID 0</h3>
 	<button class="btn_close">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
-		     viewBox="0 0 16 16">
+			 viewBox="0 0 16 16">
 			<path fill-rule="evenodd"
-			      d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+				  d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
 			<path fill-rule="evenodd"
-			      d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+				  d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
 		</svg>
 	</button>
-	<form class="form_product_add_edit" action="../products/new_product" method="post" enctype="multipart/form-data">
+	<form class="form_product_add_edit" action="<?= base_url('products/new_product') ?>" method="post"
+		  enctype="multipart/form-data">
 		<p>Name: </p><input class="input_product_name" type="text" name="product_name"/>
 		<p>Description: </p><textarea class="input_product_desc" name="product_desc"></textarea>
 		<p>Categories: </p>
 		<div class="select_tag_container">
-			<button class="dummy_select_tag" type="button"><span class="selected_category"></span><span>&#9660;</span></button>
+			<button class="dummy_select_tag" type="button"><span class="selected_category"></span><span>&#9660;</span>
+			</button>
 			<ul class="product_categories">
+
 			</ul>
 		</div>
 		<input type="hidden" class="product_add_category" name="product_category">
 		<p>or add new category: </p><input type="text" name="product_add_category"/>
 		<p>Price: </p><input class="input_product_price" type="number" name="product_price" min="0.01" step="0.01"/>
 		<p>Quantity (Inventory): </p><input class="input_product_qty" type="number" name="product_qty"/>
-		<p class="img_field_name">Images: </p><input id="img_upload" type="file" name="img_upload[]" multiple="multiple" accept=".png, .jpg, .jpeg"/>
+		<p class="img_field_name">Images: </p><input id="img_upload" type="file" name="img_upload[]" multiple="multiple"
+													 accept=".png, .jpg, .jpeg"/>
 		<input type="hidden" name="set_images" class="set_images">
 		<label class="file_upload_label" for="img_upload">Upload</label>
 		<ul class="img_upload_container">
@@ -741,16 +773,16 @@
 	</form>
 	<div class="bg_category_confirm_delete">
 		<div id="delete_category"></div>
-<!--		<div class="category_confirm_delete">-->
-<!--			<p>Are you sure you want to delete "<span class="category_name">Shirt</span>" category?</p>-->
-<!--			<div>-->
-<!--				<form action="products/delete_category" method="post">-->
-<!--					<input class="category_id" type="hidden" name="category_id" value="id"/>-->
-<!--					<input type="submit" value="Yes"/>-->
-<!--				</form>-->
-<!--				<button type="button">No</button>-->
-<!--			</div>-->
-<!--		</div>-->
+		<!--		<div class="category_confirm_delete">-->
+		<!--			<p>Are you sure you want to delete "<span class="category_name">Shirt</span>" category?</p>-->
+		<!--			<div>-->
+		<!--				<form action="products/delete_category" method="post">-->
+		<!--					<input class="category_id" type="hidden" name="category_id" value="id"/>-->
+		<!--					<input type="submit" value="Yes"/>-->
+		<!--				</form>-->
+		<!--				<button type="button">No</button>-->
+		<!--			</div>-->
+		<!--		</div>-->
 	</div>
 </dialog>
 </body>

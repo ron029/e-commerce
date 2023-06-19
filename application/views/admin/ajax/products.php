@@ -22,7 +22,7 @@
 		$newImg = $img['imgid_no'][0];
 ?>
 	<tr class="color<?= ($key % 2) ? 0 : 1  ?> product_id_<?= $product['id'] ?>">
-		<td><img src="<?= base_url('assets/img/products/') . $newImg . '.jpg' ?>" alt="<?= $product['img_url'] ?>"></td>
+		<td><img src="<?= base_url('assets/img/products/') . $newImg . '.jpg' ?>" alt="<?= $product['name'] ?>"></td>
 		<td class="product_id"><?= $product['id'] ?></td>
 		<td><?= $product['name'] ?></td>
 		<td><?= $product['stock'] ?></td>
