@@ -246,7 +246,6 @@
 				$(".modal_bg_delete_product").hide();
 			});
 
-
 			// submit delete form using the general ajax. Not this!
 			$(document).on("click", ".admin_product_delete input[type=submit]", function () {
 				$(".product_id_" + $(this).siblings().val()).remove();
@@ -742,8 +741,7 @@
 				  d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
 		</svg>
 	</button>
-	<form class="form_product_add_edit" action="<?= base_url('products/new_product') ?>" method="post"
-		  enctype="multipart/form-data">
+	<form class="form_product_add_edit" action="<?= base_url('products/new_product') ?>" method="post" enctype="multipart/form-data">
 		<p>Name: </p><input class="input_product_name" type="text" name="product_name"/>
 		<p>Description: </p><textarea class="input_product_desc" name="product_desc"></textarea>
 		<p>Categories: </p>

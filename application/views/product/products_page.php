@@ -44,6 +44,7 @@
 
 		$(document).ready(function () {
 
+
 			$(document).on("change", ".sort", function () {
 				$.post($('.sort_form').attr('action'), $(this).serialize(), function (res) {
 					$('#shop').html(res);
